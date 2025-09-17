@@ -41,10 +41,7 @@
 ✅ Comentários no código para explicar a função de cada evento.  
 ✅ Estrutura de projeto conforme solicitado no enunciado.  
 
----
-## Observações
-- As imagens fornecidas são apenas arquivos vazios de exemplo, podem ser substituídas por imagens reais.  
-- Todos os eventos foram testados no Chrome, mas devem funcionar em outros navegadores modernos.  
+--- 
 
 ✅Link com o Resultado do site:
 https://elisangelafelix.github.io/Projeto-Site-JS-Pratica11/
