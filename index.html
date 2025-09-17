@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padaria Doce Sabor</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+  
+      <img src="imagens/banner.png" alt="Logo" class="logo"/>
+      <h1>Padaria Doce Sabor</h1>
+    </div>
+
+    <!-- Botão hamburguer -->
+  <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
+
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-link">Início</a>
+    <a href="#catalogo" class="nav-link">Produtos</a>
+    <a href="#carrinho" class="nav-link">Carrinho</a>
+    <a href="#painel" class="nav-link">Painel</a>
+    <a href="#contato" class="nav-link">Contato</a>
+  </nav>
+</header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero-text">
+        <h1>Bem-vindo (a) à Padaria Doce Sabor</h1>
+        <p>Tradição, sabor e qualidade bem pertinho de você.</p>
+       </div>
+      </section>
+
+     <!-- Catálogo de Produtos -->
+    <section id="catalogo">
+      <h2>Catálogo de Produtos</h2>
+      <input 
+    type="text" 
+    id="buscaProduto" 
+    placeholder="Buscar produto..." 
+    oninput="filtrarProdutos()">
+      <div id="produtos"></div>
+    </section>
+
+      <section id="carrinho" class="carrinho-container">
+      <h2>🛒 Carrinho</h2>
+
+  <div class="carrinho-topo">
+    <div class="cliente-info">
+      <label>Cliente: <input type="text" id="clienteNome"></label>
+      <label>Pontos disponíveis: <input type="number" id="pontosDisponiveis" value="0" disabled></label>
+      <label>Usar pontos (1 ponto = R$1): 
+        <input type="number" id="usarPontos" value="0" oninput="renderCarrinho()">
+      </label>
+    </div>
+  </div>
+
+  <div class="carrinho-conteudo">
+    <!-- Lista de produtos -->
+    <table class="tabela-carrinho">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço</th>
+          <th>Qtd</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="itens-carrinho">
+        <!-- Produtos serão inseridos aqui -->
+      </tbody>
+    </table>
+   
+    <!-- Painel lateral de totais -->
+    <div class="painel-valores">
+      <label>Entrega (R$): <input type="number" id="entrega" value="0" oninput="renderCarrinho()"></label>
+      <label>Imposto (%): <input type="number" id="imposto" value="5" oninput="renderCarrinho()"></label>
+      <label>Desconto cupom (R$): <input type="number" id="descontoCupom" value="0" oninput="renderCarrinho()"></label>
+
+      <hr>
+      <p>Subtotal: <span id="subtotal">R$ 0,00</span></p>
+      <p>Desc. por quantidade: <span id="descontoQuantidade">R$ 0,00</span></p>
+      <p>Impostos: <span id="impostos">R$ 0,00</span></p>
+      <p>Entrega: <span id="entregaValor">R$ 0,00</span></p>
+      <p>Desconto cupom: <span id="descontoCupomTexto">R$ 0,00</span></p>
+      <p>Desconto pontos: <span id="descontoPontos">R$ 0,00</span></p>
+      <hr>
+      <p><strong>Total: <span id="total">R$ 0,00</span></strong></p>
+    </div>
+  </div>
+</section>
+
+<div class="carrinho-footer">
+    <button class="btn-limpar-carrinho" onclick="limparCarrinho()">🗑️ Limpar Carrinho</button>
+  </div>
+
+<div class="pagamento-container">
+  <h3>💳 Pagamento</h3>
+
+  <div class="pagamento-linha">
+    <label>Valor pago (R$):
+      <input type="number" id="valorPago" value="0" oninput="calcularTroco()">
+    </label>
+
+    <label>Troco (R$):
+      <input type="text" id="troco" value="0,00" readonly>
+    </label>
+
+    <label>Converter para:
+      <select id="moeda" onchange="converterMoeda()">
+        <option value="BRL">BRL (R$)</option>
+        <option value="USD">USD ($)</option>
+        <option value="EUR">EUR (€)</option>
+      </select>
+    </label>
+  </div>
+
+  <p><strong>Total convertido: <span id="totalConvertido">R$ 0,00</span></strong></p>
+
+  <section id="checkout">
+  <h3>📋 Checkout</h3>
+
+  <form id="checkoutForm" class="checkout-form">
+    <!-- Nome -->
+    <label for="nomeCompleto">Nome Completo:</label>
+    <div>
+      <input type="text" id="nomeCompleto" name="nomeCompleto" required maxlength="80">
+      <span class="erro-msg" id="erroNome"></span>
+    </div>
+
+    <!-- Email -->
+    <label for="emailCheckout">Email:</label>
+    <div>
+      <input type="email" id="emailCheckout" name="emailCheckout" required>
+      <span class="erro-msg" id="erroEmail"></span>
+    </div>
+
+    <!-- Endereço -->
+    <label for="endereco">Endereço:</label>
+    <div>
+      <textarea id="endereco" name="endereco" required maxlength="200"></textarea>
+      <span class="erro-msg" id="erroEndereco"></span>
+      <div id="charCountEndereco" class="char-count"></div>
+    </div>
+
+    <!-- Senha -->
+    <label for="senhaCheckout">Senha:</label>
+    <div>
+      <input type="password" id="senhaCheckout" name="senhaCheckout" required>
+      <span id="forcaSenhaCheckout"></span>
+    </div>
+
+    <!-- Botão: ocupa a segunda coluna -->
+ <label></label>
+<div>
+  <button type="submit" class="btn-primary">✅ Finalizar pedido</button>
+</div>
+</form>
+</section>
+
+    <!-- Painel Administrativo -->
+
+    <section id="painel">
+  <h2>📊 Painel Administrativo</h2>
+
+  <div class="painel-grid">
+    <div class="painel-card">
+      <h3>Preços & Promoções</h3>
+      <div id="painel-precos"></div>
+    </div>
+
+    <div class="painel-card">
+      <h3>Estoque</h3>
+      <div id="painel-estoque"></div>
+    </div>
+
+    <div class="painel-card">
+      <h3>Estatísticas</h3>
+      <div id="estatisticas"></div>
+    </div>
+  </div>
+
+  <button onclick="limparDados()" class="btn-limpar">Limpar dados</button>
+</section>
+
+<section id="formulario">
+  <h2>📩 Entre em Contato</h2>
+<form id="contatoForm">
+  <label>Email:
+    <input type="email" id="email" required>
+    <span id="emailErro" class="erro-msg"></span>
+  </label>
+  <br><br>
+
+  <label>Senha:
+    <input type="password" id="senha" required>
+    <span id="forcaSenha"></span>
+  </label>
+  <br><br>
+
+  <label>Observação:
+    <textarea id="observacao" name="observacao" rows="4" maxlength="300" placeholder="Digite sua mensagem..."></textarea>
+  </label>
+  <br><br>
+
+  <button type="submit">Enviar</button>
+</form>
+</section>
+</main>
+
+<!-- Rodapé - Informações de Contato e créditos -->
+  <footer id="contato" class="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div>
+        <h4>🏠Endereço</h4>
+         <ul class="footer-list">
+        <li>Rua das Delicias, 123 - Centro</li>
+        <li>São Paulo - SP</li>
+        </ul>
+      </div>
+      <div>
+        <h4>📞Contato</h4>
+        <ul class="footer-list">
+          <li><a href="tel:+5511999999999">Telefone: (11) 1234-5678</a></li>
+          <li><a href="mailto:padariadobairro@deliciais.com.br">Email: padariadobairro@deliciais.com.br</a></li>
+          </ul>
+      </div>
+      <div>
+        <h4>🕗Horario de Funcionamento</h4>
+        <ul class="footer-list">
+          <li>Segunda a Sabado: 7h00 às 22h00</li>
+          <li>Domingos e Feriados: 8h00 às 15h00</li>
+         </ul>
+      </div>
+    </div>
+  <p>&copy; 2025 Padaria Doce Sabor. Todos os direitos reservados.</p>
+</footer>
+
+  <!-- Botões fixos -->
+ <div class="btn-fixed">
+  <!-- Botão Voltar ao Topo -->
+  <button id="back-to-top" class="back-to-top btn-floating" aria-label="Voltar ao topo">
+    ⬆ Voltar ao topo
+  </button>
+
+  <!-- Botão WhatsApp -->
+  <a href="https://www.whatsapp.com/" class="btn-whatsapp btn-floating" target="_blank" rel="noopener">
+    WhatsApp
+  </a>
+</div>
+ <!-- ✅ JS externo -->
+<script src="script.js"></script>
+
+</body>
+</html>
