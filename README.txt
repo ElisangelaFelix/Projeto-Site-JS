@@ -47,4 +47,4 @@
 - Todos os eventos foram testados no Chrome, mas devem funcionar em outros navegadores modernos.  
 
 ✅Link com o Resultado do site:
-https://elisangelafelix.github.io/Projeto-Site-JS/
+https://elisangelafelix.github.io/Projeto-Site-JS-Pratica11/
